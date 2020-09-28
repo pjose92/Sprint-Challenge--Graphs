@@ -87,25 +87,25 @@ def get_unvisited_exits(room):
 
 
 def create_graph_recursive(room, graph, visited):
-    #check if room is in graph
+    # check if the room is in the graph
     if room.id not in graph:
         add_room(room, graph)
-        #append the visited room order to visited
+        # append the visited room order to visited
         visited.append(room.id)
-    #get unvisited exits
+    # get unvisited exits
     unvisited_exits = get_unvisited_exits(room)
     if len(unvisited_exits) > 0:
-        #loop through unvisted exits
+        # loop through unvisited exits
         for exit in unvisited_exits:
-            #get new room of that direction
-            new_room = room.get_room_direction(exit)
-            #add new room to graph if it is not yet
+            # get the new room of that direction
+            new_room = room.get_room_in_direction(exit)
+            # add the new room to graph if it's not in yet
             if new_room.id not in graph:
                 add_room(new_room, graph)
                 visited.append(new_room.id)
-            #get reverse exit
+            # get the reverse exit
             reverse_exit = reverse_direction[exit]
-            #now we update graph
+            # update graph
             graph[room.id][exit] = new_room.id
             graph[new_room.id][reverse_exit] = room.id
             create_graph_recursive(new_room, graph, visited)
@@ -123,16 +123,17 @@ def bfs(starting_room, destination_room, graph):
     #room queue determines bfs
     while room_queue.size() > 0:
         room_path = room_queue.dequeue()
+        # take the next direction to travel in the queue
         dir_path = dir_queue.dequeue()
         last_room = room_path[-1]
         if last_room not in visited:
             visited.add(last_room)
-            #found shortest path between two rooms
+            # we found our shortest path between 2 rooms
             if last_room == destination_room:
                 return dir_path
             for direction in graph[last_room]:
-                #add direction to both queues 
-                new_room_path = room_graph + [graph[last_room][direction]]
+                # add direction to both queues
+                new_room_path = room_path + [graph[last_room][direction]]
                 new_dir_path = dir_path + [direction]
                 room_queue.enqueue(new_room_path)
                 dir_queue.enqueue(new_dir_path)
@@ -146,9 +147,9 @@ for i in range(len(room_visited) -1):
     #add path navigation between two rooms to traversal path
     traversal_path.extend(path)
 
-print(f"hello im GRAPH: ", graph)
-print(f"Hello i am visited rooms: ", room_visited)
-print(f"Hello i am traversal path: ", traversal_path)
+# # print(f"hello im GRAPH: ", graph)
+# print(f"Hello i am visited rooms: ", room_visited)
+# print(f"Hello i am traversal path: ", traversal_path)
 
 
 
