@@ -151,9 +151,6 @@ for i in range(len(room_visited) -1):
 # print(f"Hello i am visited rooms: ", room_visited)
 # print(f"Hello i am traversal path: ", traversal_path)
 
-
-
-
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
